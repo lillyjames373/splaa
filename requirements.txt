@@ -1,0 +1,11 @@
+ollama
+librosa
+torch
+openai-whisper
+numpy
+coqui-tts
+sounddevice
+python-weather
+wikipedia
+yfinance
+GoogleNews
