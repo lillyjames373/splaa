@@ -10,6 +10,7 @@ import numpy as np
 from TTS.api import TTS
 import time
 import sounddevice as sd
+import sys
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Device: {device}")
@@ -42,10 +43,11 @@ def generateAudio(textinput, speaker_file):
                     speaker_wav=speaker_file,
                     language="en")
         sd.play(wav, 26460)
-    except Exception as e:
-        print(e)
+    except Exception:
+        print("Error generating assistant voice. \nIs your speaker_file path correct?")
+        sys.exit(1)
 
-
+        
 def recordAudio():
     """Records audio with sounddevice after a volume threshold is passed and stops recording after a silence duration is exceeded
        Saves the file as whisper.wav

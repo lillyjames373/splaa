@@ -5,16 +5,34 @@
 from ollama import chat
 from .audioFunctions import generateAudio, recordAudio, whisperTranscription
 from . import helperFunctions
-
+import ollama
+import sys
 
 async def generateResponse(model, assistant_name, user_name, speaker_file, system_prompt, command_permission):
+    
     if command_permission:
         helperFunctions.tools.append({"type": "function", "function": {"name": "executeCommand", "description": "Executes a command in the powershell terminal. eg start firefox, systeminfo ...ect", "parameters": {"type": "object", "properties": {"command": {"type": "string", "description": "The command to execute"}},"required": ["command"]}}})
         helperFunctions.available_functions['executeCommand']= helperFunctions.executeCommand
+
     history = [
     {'role': 'system', 'content': f"Rule: all outputs should be concise, english and in paragraph form. Your Name:{assistant_name}. Prompt: {system_prompt}. User Name:{user_name}."}
     ]
-    response = chat(model, messages=history, tools=helperFunctions.tools)
+
+    try:
+        ollama.pull(model)
+    except ollama.ResponseError:
+        print(f"Model {model} does not exist.")
+        sys.exit(1)
+    except Exception:
+        print("Error: Ollama process not detected. \nPlease make sure you have Ollama installed and currently running.")
+        sys.exit(1)
+        
+    try:
+        response = chat(model, messages=history, tools=helperFunctions.tools)
+    except ollama.ResponseError as e:
+        print(e)
+        sys.exit(1)
+
     while True:
         user_text = whisperTranscription(recordAudio())
         if assistant_name.lower() in user_text.lower():

@@ -2,6 +2,7 @@ import argparse
 import asyncio
 from .assistantInteraction import generateResponse
 import os
+from TTS.utils.manage import ModelManager
 
 def main():
     parser = argparse.ArgumentParser(description='splaa CLI')
@@ -12,7 +13,9 @@ def main():
     parser.add_argument('--system_prompt', default="You are a very concise and to the point AI assistant", help='System prompt for the assistant')
     parser.add_argument('--command_permission', default=False, help='Determines whether the model can execute commands on your system. WARNING: COULD LEAD TO UNEXPECTED CATASTROPHIC RESULTS')
     args = parser.parse_args()
-
+    def tos_agreed():
+        return True
+    ModelManager.tos_agreed() = tos_agreed()
     asyncio.run(generateResponse(
         model=args.model,
         assistant_name=args.assistant_name,

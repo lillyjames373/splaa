@@ -96,7 +96,6 @@ async def executeCommand(command):
         output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT).decode("utf-8")
         if output.strip() == "":
             return json.dumps(f"Command '{command}' executed successfully")
-        print(output)
         return json.dumps(f"Command output: {output}")
     except subprocess.CalledProcessError as e:
         return json.dumps(f"Error: Command '{command}' failed with exit code {e.returncode}")
