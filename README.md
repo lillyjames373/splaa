@@ -1,4 +1,4 @@
-# SPLAA
+# SPLAA (Simple Prebuilt Local AI Assistant)
 
 SPLAA is an AI assistant framework that utilizes voice recognition, text-to-speech, and tool-calling capabilities to provide a conversational and interactive experience. It uses LLMs available through Ollama and has capabilities for extending functionalities through a modular tool system.
 
