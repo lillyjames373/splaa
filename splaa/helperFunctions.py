@@ -9,7 +9,9 @@ import yfinance as yf
 from GoogleNews import GoogleNews
 import random
 import subprocess
-
+import ollama
+from PIL import ImageGrab
+import sys
 tools = [
   {"type": "function", "function": {"name": "getWeather", "description": "Get the current weather and forecast for a given city", "parameters": {"type": "object", "properties": {"city": {"type": "string", "description": "The name of the city for which to get the weather"}}, "required": ["city"]}}},
   {"type": "function", "function": {"name": "wikipediaSearch", "description": "Search for a term/person/anthing on Wikipedia and return a brief summary", "parameters": {"type": "object", "properties": {"term": {"type": "string", "description": "The term to search for on Wikipedia"}}, "required": ["term"]}}},
@@ -17,6 +19,8 @@ tools = [
   {"type": "function", "function": {"name": "getStockPrice", "description": "Get the current stock price of a given ticker symbol", "parameters": {"type": "object", "properties": {"ticker": {"type": "string", "description": "The ticker symbol of the stock to get the price for"}},"required": ["ticker"]}}},
   {"type": "function", "function": {"name": "todoList", "description": "Manage the todo list(if action = read then item = None)", "parameters": {"type": "object", "properties": {"action": {"type": "string", "description": "The action to perform (read, add, remove)"}, "item": {"type": "string", "description": "The item to add or remove"}},"required": ["action", "item"]}}},
 ]
+
+vision_model = ""
 
 async def getWeather(city):
     string = ''
@@ -139,6 +143,28 @@ async def todoList(action, item):
 
     else:
         return json.dumps("Error: Invalid action")
+    
+async def viewScreen():
+    ImageGrab.grab().save("splaa/image.png")
+    try:
+        response = ollama.chat(
+            model=vision_model,
+            messages=[{
+                'role': 'user',
+                'content': 'Describe this image and what is in it',
+                'images': ['splaa/image.png']
+            }]
+        )
+        ImageGrab.grab().close()
+        return json.dumps(f"Screen Description: {response["message"]["content"]}")      
+    except ollama.ResponseError as e:
+        print(e)
+        sys.exit(1)
+    except Exception as e:
+        print(e)
+        sys.exit(1)
+
+
     
 
 available_functions = {

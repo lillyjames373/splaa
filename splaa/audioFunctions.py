@@ -16,7 +16,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Device: {device}")
 
 if device == "cpu":
-    print("This project is currently using cpu to run it's models. \nWhile this is possible, it is slower than using NVIDIA's cuda toolkit(by a noticeable amount). \nIf you have a cuda capable NVIDIA graphics card, please consider installing the 12.+ cuda toolkit drivers and corresponding torch versions for faster speeds.")
+    print("This project is currently using cpu to run it's models. \nWhile this is possible, it is slower than using NVIDIA's cuda toolkit(by a noticeable amount). \nIf you have a cuda capable NVIDIA graphics card, please consider installing a 12.+ cuda toolkit driver and the corresponding torch version for faster speeds.\n")
 tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
 with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=FutureWarning, module="whisper") # Filter by module

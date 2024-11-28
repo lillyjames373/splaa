@@ -8,11 +8,25 @@ from . import helperFunctions
 import ollama
 import sys
 
-async def generateResponse(model, assistant_name, user_name, speaker_file, system_prompt, command_permission):
+async def generateResponse(model, assistant_name, user_name, speaker_file, system_prompt, command_permission, enable_vision, vision_model):
     
     if command_permission:
         helperFunctions.tools.append({"type": "function", "function": {"name": "executeCommand", "description": "Executes a command in the powershell terminal. eg start firefox, systeminfo ...ect", "parameters": {"type": "object", "properties": {"command": {"type": "string", "description": "The command to execute"}},"required": ["command"]}}})
-        helperFunctions.available_functions['executeCommand']= helperFunctions.executeCommand
+        helperFunctions.available_functions['executeCommand'] = helperFunctions.executeCommand
+    
+    if enable_vision:
+        try:
+            ollama.pull(vision_model)
+            if "projector_info" not in ollama.show(vision_model):
+                print(f"Error: {vision_model} model does not support vision")
+                sys.exit(1)
+        except ollama.ResponseError:
+            print(f"Error: Model {vision_model} does not exist.")
+            sys.exit(1)
+        helperFunctions.vision_model = vision_model
+        helperFunctions.tools.append({"type": "function", "function": {"name": "viewScreen", "description": "Get a detailed description of the current screen/what the user sees. Use anytime an image is needed for info.", "parameters": {"type": "object", "properties": {},"required": []}}})
+        helperFunctions.available_functions['viewScreen'] = helperFunctions.viewScreen
+
 
     history = [
     {'role': 'system', 'content': f"Rule: all outputs should be concise, english and in paragraph form. Your Name:{assistant_name}. Prompt: {system_prompt}. User Name:{user_name}."}
@@ -21,7 +35,7 @@ async def generateResponse(model, assistant_name, user_name, speaker_file, syste
     try:
         ollama.pull(model)
     except ollama.ResponseError:
-        print(f"Model {model} does not exist.")
+        print(f"Error: Model {model} does not exist.")
         sys.exit(1)
     except Exception:
         print("Error: Ollama process not detected. \nPlease make sure you have Ollama installed and currently running.")

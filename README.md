@@ -44,6 +44,7 @@ Once SPLAA is running, it will listen for your voice. Speak your request or comm
 * `getStockPrice`: Gets the current stock price for a given ticker symbol.
 * `todoList`: Manages a simple to-do list (read, add, remove items).
 * `executeCommand`: (**DANGEROUS**) Executes a command in the shell. Disabled by default.
+* `viewScreen`: Takes a screenshot of the current view windows and send a description to the assistant.
 
 ## Configuration <a id="configuration"></a>
 
@@ -55,13 +56,15 @@ You can customize the SPLAA attributes using command-line arguments:
 * `--speaker_file`: Path to the speaker WAV file for TTS cloning (should be at least 6 seconds of voice) (default: `splaa/speaker.wav`).
 * `--system_prompt`: Provides the initial prompt to guide the assistant's behavior (default: "You are a very concise and to-the-point AI assistant").
 * `--command_permission`: Enables/disables command execution (default: `False` because next thing you know it removes system32 :) ). Only use if you know what you're doing…seriously.
+* `--enable_vision`: Enables/disables vision capabilities for the model(default: `False` very vram expensive. I recommend only enabling this if you're rich and have a 24 gb 3090/4090)
+* `--vision_model`: Specifies the vision model to use. **--enable_vision must be set to True** (default: `minicpm-v` after a little bit of testing this offered the best quality for the best speed.)
 
 
 ## Voice Cloning <a id="voice-cloning"></a>
 
 Here's a quick guide to clone voices from YouTube clips for those who don't already have a speaker file:
 
-1. **Download the yt-dlp executable:** Download the [yt-dlp](https://github.com/yt-dlp/yt-dlp) executable.
+1. **Download the [yt-dlp](https://github.com/yt-dlp/yt-dlp) executable:**
 2. **Extract audio section:** In the directory containing the executable, open your terminal and execute this command (replace `video_url_here` with the actual URL, and adjust `-ss` and `-t` for start and end times):
 
 ```bash
