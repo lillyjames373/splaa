@@ -35,6 +35,7 @@ splaa --options [option] ...
 
 
 Once SPLAA is running, it will listen for your voice. Speak your request or command. Include the assistant's name (Default is Athena) in your request or it won't respond. This is meant to be running in the background. Ex: "Athena, what's the weather like in London?".
+![](https://github.com/cp3249/splaa/blob/main/example.gif)
 
 ## Available Tools <a id="available-tools"></a>
 
