@@ -12,6 +12,7 @@ import subprocess
 import ollama
 from PIL import ImageGrab
 import sys
+import os
 tools = [
   {"type": "function", "function": {"name": "getWeather", "description": "Get the current weather and forecast for a given city", "parameters": {"type": "object", "properties": {"city": {"type": "string", "description": "The name of the city for which to get the weather"}}, "required": ["city"]}}},
   {"type": "function", "function": {"name": "wikipediaSearch", "description": "Search for a term/person/anthing on Wikipedia and return a brief summary", "parameters": {"type": "object", "properties": {"term": {"type": "string", "description": "The term to search for on Wikipedia"}}, "required": ["term"]}}},
@@ -145,14 +146,16 @@ async def todoList(action, item):
         return json.dumps("Error: Invalid action")
     
 async def viewScreen():
-    ImageGrab.grab().save("splaa/image.png")
+    image_dir = os.path.dirname(os.path.abspath(__file__))
+    image_path = f"{image_dir}/image.png"
+    ImageGrab.grab().save(image_path)
     try:
         response = ollama.chat(
             model=vision_model,
             messages=[{
                 'role': 'user',
                 'content': 'Describe this image and what is in it',
-                'images': ['splaa/image.png']
+                'images': [image_path]
             }]
         )
         ImageGrab.grab().close()
