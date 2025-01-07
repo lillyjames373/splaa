@@ -101,6 +101,14 @@ Contributors are welcome! Please create a pull request with a clear description 
 
 **Answer:** This is most likely because your Python scripts are not in your system path. This is a common issue for Microsoft Store Python installations. Check this file location (for Windows) `"C:\Users\yournamehere\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\LocalCache\local-packages\Python312\Scripts"` and make sure it exists. If it does, add it to your system path using your preferred method. If it doesn't exist…perform a clean installation of Python.
 
+**Question:** Why is my vision model not being recognized?
+
+**Answer:** In newer versions of Ollama python the model information command outputs a different type(now a special type instead of a dictionary) because of this the current framework is unable to interpret the model information to determine if it has vision(even if it does) I submitted the issue to Ollama python. In the meantime, stick to version 0.3.3, I may implement a workaround for this later
+
+**Question:** Why are my words not being properly transcribed
+
+**Answer:** This framework uses the "small" whisper model for speech transcription. I chose this because on most computers it offers the best speed while running alongside other models. If you believe your computer(gpu) has enough performance for better models, change the model from "small" to "base" or "large" in the audioFunctions file and rebuild the package. I may add a customization option for this in the future.
+
 **Question:** Why is splaa talking weirdly (toolspeak) output?
 
 **Answer:** I'm not fully sure why this happens yet, but it can occur from time to time. The best solution is to restart the model, and if that doesn't work, reinstall the package. It's possibly an Ollama bug.

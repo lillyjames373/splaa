@@ -19,7 +19,7 @@ if device == "cpu":
     print("This project is currently using cpu to run it's models. \nWhile this is possible, it is slower than using NVIDIA's cuda toolkit(by a noticeable amount). \nIf you have a cuda capable NVIDIA graphics card, please consider installing a 12.+ cuda toolkit driver and the corresponding torch version for faster speeds.\n")
 tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(device)
 with warnings.catch_warnings():
-    warnings.filterwarnings("ignore", category=FutureWarning, module="whisper") # Filter by module
+    warnings.filterwarnings("ignore", category=FutureWarning, module="whisper")
     model = whisper.load_model("small").to(device)
 
 def whisperTranscription(audio_data):
@@ -39,9 +39,7 @@ def generateAudio(textinput, speaker_file):
     """
 
     try:
-        wav = tts.tts(text=textinput,
-                    speaker_wav=speaker_file,
-                    language="en")
+        wav = tts.tts(text=textinput, speaker_wav=speaker_file, language="en")
         sd.play(wav, 26460)
     except Exception:
         print("Error generating assistant voice. \nIs your speaker_file path correct?")
@@ -50,7 +48,6 @@ def generateAudio(textinput, speaker_file):
         
 def recordAudio():
     """Records audio with sounddevice after a volume threshold is passed and stops recording after a silence duration is exceeded
-       Saves the file as whisper.wav
     """
     fs = 44100  
     silence_duration = 2.25
