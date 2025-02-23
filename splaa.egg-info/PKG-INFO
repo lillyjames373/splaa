@@ -1,0 +1,22 @@
+Metadata-Version: 2.2
+Name: splaa
+Version: 1.1
+Summary: A local AI assistant framework with tool calling capabilities, TTS, and voice recognition
+Author: Claude Petit-Frere
+Author-email: cp3249@drexel.edu
+License-File: LICENSE
+Requires-Dist: ollama==0.3.3
+Requires-Dist: librosa
+Requires-Dist: torch
+Requires-Dist: openai-whisper
+Requires-Dist: numpy
+Requires-Dist: coqui-tts
+Requires-Dist: sounddevice
+Requires-Dist: python-weather
+Requires-Dist: wikipedia
+Requires-Dist: yfinance
+Requires-Dist: GoogleNews
+Dynamic: author
+Dynamic: author-email
+Dynamic: requires-dist
+Dynamic: summary

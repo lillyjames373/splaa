@@ -1,0 +1,11 @@
+ollama==0.3.3
+librosa
+torch
+openai-whisper
+numpy
+coqui-tts
+sounddevice
+python-weather
+wikipedia
+yfinance
+GoogleNews

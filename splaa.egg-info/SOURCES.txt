@@ -1,0 +1,16 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+splaa/__init__.py
+splaa/assistantInteraction.py
+splaa/audioFunctions.py
+splaa/helperFunctions.py
+splaa/speaker.wav
+splaa/splaacli.py
+splaa.egg-info/PKG-INFO
+splaa.egg-info/SOURCES.txt
+splaa.egg-info/dependency_links.txt
+splaa.egg-info/entry_points.txt
+splaa.egg-info/requires.txt
+splaa.egg-info/top_level.txt
