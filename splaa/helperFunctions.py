@@ -13,12 +13,19 @@ import ollama
 from PIL import ImageGrab
 import sys
 import os
+from dotenv import load_dotenv
+import requests
+
+# Load environment variables from .env file
+load_dotenv()
+
 tools = [
   {"type": "function", "function": {"name": "getWeather", "description": "Get the current weather and forecast for a given city", "parameters": {"type": "object", "properties": {"city": {"type": "string", "description": "The name of the city for which to get the weather"}}, "required": ["city"]}}},
   {"type": "function", "function": {"name": "wikipediaSearch", "description": "Search for a term/person/anthing on Wikipedia and return a brief summary", "parameters": {"type": "object", "properties": {"term": {"type": "string", "description": "The term to search for on Wikipedia"}}, "required": ["term"]}}},
   {"type": "function", "function": {"name": "getNews", "description": "Get 5 random news article titles from a given topic", "parameters": {"type": "object", "properties": {"topic": {"type": "string", "description": "The topic to get news from (US, World, Business, Technology, Sports, Science, Health)"}},"required": ["topic"]}}},
   {"type": "function", "function": {"name": "getStockPrice", "description": "Get the current stock price of a given ticker symbol", "parameters": {"type": "object", "properties": {"ticker": {"type": "string", "description": "The ticker symbol of the stock to get the price for"}},"required": ["ticker"]}}},
   {"type": "function", "function": {"name": "todoList", "description": "Manage the todo list(if action = read then item = None)", "parameters": {"type": "object", "properties": {"action": {"type": "string", "description": "The action to perform (read, add, remove)"}, "item": {"type": "string", "description": "The item to add or remove"}},"required": ["action", "item"]}}},
+  {"type": "function", "function": {"name": "forwardToNate", "description": "Forward a message to Nate via webhook", "parameters": {"type": "object", "properties": {"message": {"type": "string", "description": "The message to forward to Nate"}}, "required": ["message"]}}}
 ]
 
 vision_model = ""
@@ -167,13 +174,24 @@ async def viewScreen():
         print(e)
         sys.exit(1)
 
+async def forwardToNate(message):
+    webhook_url = os.getenv('NATE_WEBHOOK_URL')
+    if not webhook_url or webhook_url == 'your_webhook_url_here':
+        return json.dumps("Error: Please set NATE_WEBHOOK_URL in your .env file")
+    
+    try:
+        response = requests.post(webhook_url, json={"content": message})
+        response.raise_for_status()
+        return json.dumps("Message forwarded to Nate successfully")
+    except requests.exceptions.RequestException as e:
+        return json.dumps(f"Error forwarding message: {str(e)}")
 
     
-
 available_functions = {
     'getWeather': getWeather,
     'wikipediaSearch': wikipediaSearch,
     'getNews': getNews,
     'getStockPrice': getStockPrice,
-    'todoList': todoList
+    'todoList': todoList,
+    'forwardToNate': forwardToNate
 }

@@ -9,3 +9,5 @@ python-weather
 wikipedia
 yfinance
 GoogleNews
+requests
+python-dotenv
